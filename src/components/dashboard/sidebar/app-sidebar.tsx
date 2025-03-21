@@ -1,6 +1,11 @@
 "use client";
 
-import { GalleryVerticalEnd, LucideIcon, SettingsIcon } from "lucide-react";
+import {
+  GalleryVerticalEnd,
+  LucideIcon,
+  SettingsIcon,
+  UsersIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -12,8 +17,10 @@ import {
   SidebarRail,
 } from "~/components/ui/sidebar";
 import { Heading } from "~/components/ui-ext/heading";
+import { authClient } from "~/lib/auth-client";
 
 import { NavMain } from "./nav-main";
+import { NavUser } from "./nav-user";
 
 interface NavItem {
   title: string;
@@ -35,8 +42,21 @@ interface NavItemWithSub {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
+  const { data } = authClient.useSession();
 
   const navMain: (NavItem | NavItemWithSub)[] = [
+    {
+      title: "User management",
+      icon: UsersIcon,
+      isActive: pathname.startsWith("/dashboard/users"),
+      items: [
+        {
+          title: "Users",
+          url: "/dashboard/users",
+          isActive: pathname === "/dashboard/users",
+        },
+      ],
+    },
     {
       title: "Settings",
       icon: SettingsIcon,
@@ -61,7 +81,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain items={navMain} />
       </SidebarContent>
-      <SidebarFooter> </SidebarFooter>
+      <SidebarFooter>
+        {data?.user && (
+          <NavUser
+            user={{ ...data.user, role: (data.user.role as "user") || "user" }}
+          />
+        )}
+      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );

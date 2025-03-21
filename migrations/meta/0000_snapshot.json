@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "1cdcc0dd-06d7-4cd0-8468-268a2b12395b",
+  "id": "6dd1cb84-35f7-4f5d-bd85-948c8925d69e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "account": {
@@ -90,7 +90,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2025-03-01T08:34:21.485Z\"'"
+          "default": "'\"2025-03-19T09:51:34.428Z\"'"
         },
         "updatedAt": {
           "name": "updatedAt",
@@ -98,7 +98,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2025-03-01T08:34:21.485Z\"'"
+          "default": "'\"2025-03-19T09:51:34.428Z\"'"
         }
       },
       "indexes": {},
@@ -144,7 +144,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2025-03-01T08:34:21.485Z\"'"
+          "default": "'\"2025-03-19T09:51:34.428Z\"'"
         },
         "updatedAt": {
           "name": "updatedAt",
@@ -152,7 +152,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2025-03-01T08:34:21.485Z\"'"
+          "default": "'\"2025-03-19T09:51:34.428Z\"'"
         }
       },
       "indexes": {
@@ -220,7 +220,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2025-03-01T08:34:21.485Z\"'"
+          "default": "'\"2025-03-19T09:51:34.428Z\"'"
         },
         "updatedAt": {
           "name": "updatedAt",
@@ -228,7 +228,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2025-03-01T08:34:21.485Z\"'"
+          "default": "'\"2025-03-19T09:51:34.428Z\"'"
         }
       },
       "indexes": {},
@@ -261,13 +261,6 @@
           "notNull": true,
           "autoincrement": false
         },
-        "role": {
-          "name": "role",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
         "name": {
           "name": "name",
           "type": "text",
@@ -296,13 +289,41 @@
           "notNull": false,
           "autoincrement": false
         },
+        "role": {
+          "name": "role",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "banned": {
+          "name": "banned",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "banReason": {
+          "name": "banReason",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "banExpires": {
+          "name": "banExpires",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "createdAt": {
           "name": "createdAt",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2025-03-01T08:34:21.485Z\"'"
+          "default": "'\"2025-03-19T09:51:34.428Z\"'"
         },
         "updatedAt": {
           "name": "updatedAt",
@@ -310,7 +331,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2025-03-01T08:34:21.485Z\"'"
+          "default": "'\"2025-03-19T09:51:34.428Z\"'"
         }
       },
       "indexes": {
@@ -364,7 +385,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2025-03-01T08:34:21.485Z\"'"
+          "default": "'\"2025-03-19T09:51:34.428Z\"'"
         },
         "updatedAt": {
           "name": "updatedAt",
@@ -372,7 +393,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2025-03-01T08:34:21.485Z\"'"
+          "default": "'\"2025-03-19T09:51:34.428Z\"'"
         }
       },
       "indexes": {},

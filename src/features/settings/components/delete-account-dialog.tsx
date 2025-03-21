@@ -20,7 +20,7 @@ import {
 import { ButtonLoading } from "~/components/ui-ext/button-loading";
 import { authClient } from "~/lib/auth-client";
 
-import { useDeleteUser } from "../api/useDeleteUser";
+import { useDeleteAccount } from "../api/useDeleteAccount";
 
 const schema = z.object({
   password: z.string().min(6),
@@ -30,7 +30,7 @@ export default function DeleteAccountDialog() {
   const { data: auth } = authClient.useSession();
   const [open, setOpen] = useState(false);
 
-  const { mutate: deleteUser, isPending } = useDeleteUser();
+  const { mutate: deleteAccoount, isPending } = useDeleteAccount();
 
   const form = useForm<{ password: string }>({
     resolver: zodResolver(schema),
@@ -41,7 +41,7 @@ export default function DeleteAccountDialog() {
 
   const handleDelete = async () => {
     if (!auth?.session.token) return;
-    deleteUser({
+    deleteAccoount({
       token: auth.session.token,
       password: form.getValues("password"),
     });

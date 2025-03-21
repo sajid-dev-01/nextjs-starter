@@ -2,7 +2,7 @@
 
 import { SelectIcon } from "@radix-ui/react-select";
 import type { Column } from "@tanstack/react-table";
-import { ArrowDown, ArrowUp, ChevronsUpDown, EyeOff } from "lucide-react";
+import { ArrowDown, ArrowUp, ChevronsUpDown, EyeOff, X } from "lucide-react";
 
 import {
   Select,
@@ -27,6 +27,7 @@ export function DataTableColumnHeader<TData, TValue>({
     return <div className={cn(className)}>{title}</div>;
   }
 
+  const noneValue = `${column.id}-none`;
   const ascValue = `${column.id}-asc`;
   const descValue = `${column.id}-desc`;
   const hideValue = `${column.id}-hide`;
@@ -39,12 +40,13 @@ export function DataTableColumnHeader<TData, TValue>({
             ? descValue
             : column.getIsSorted() === "asc"
               ? ascValue
-              : undefined
+              : noneValue
         }
         onValueChange={(value) => {
           if (value === ascValue) column.toggleSorting(false);
           else if (value === descValue) column.toggleSorting(true);
           else if (value === hideValue) column.toggleVisibility(false);
+          else if (value === noneValue) column.clearSorting();
         }}
       >
         <SelectTrigger
@@ -87,6 +89,15 @@ export function DataTableColumnHeader<TData, TValue>({
                     aria-hidden="true"
                   />
                   Desc
+                </span>
+              </SelectItem>
+              <SelectItem value={noneValue}>
+                <span className="flex items-center gap-2">
+                  <X
+                    className="text-muted-foreground/70 size-3.5"
+                    aria-hidden="true"
+                  />
+                  Reset
                 </span>
               </SelectItem>
             </>

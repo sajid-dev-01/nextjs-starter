@@ -43,7 +43,7 @@ export default async function DashboardLayout({ children }: Props) {
               <UserMenu user={authn.user} />
             </div>
           </header>
-          <main className="mt-4 px-4"> {children} </main>
+          <div className="mt-4 px-4"> {children} </div>
         </SidebarInset>
       </SidebarProvider>
     </KBar>

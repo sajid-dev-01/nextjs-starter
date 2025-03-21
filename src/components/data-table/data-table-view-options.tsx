@@ -39,17 +39,40 @@ export function DataTableViewOptions<TData>({
           variant="outline"
           role="combobox"
           size="sm"
-          className="focus:ring-ring ml-auto hidden h-8 gap-2 focus:ring-1 focus:outline-none focus-visible:ring-0 lg:flex"
+          className="focus:ring-ring ml-auto flex h-8 focus:ring-1 focus:outline-hidden"
+          onPointerDown={(event) => {
+            /**
+             * @see https://github.com/radix-ui/primitives/blob/main/packages/react/select/src/select.tsx#L281-L299
+             */
+
+            // prevent implicit pointer capture
+            const target = event.target;
+            if (!(target instanceof Element)) return;
+            if (target.hasPointerCapture(event.pointerId)) {
+              target.releasePointerCapture(event.pointerId);
+            }
+
+            if (
+              event.button === 0 &&
+              event.ctrlKey === false &&
+              event.pointerType === "mouse"
+            ) {
+              // prevent trigger from stealing focus from the active item
+              event.preventDefault();
+            }
+          }}
         >
-          <Settings2 className="size-4" />
+          <Settings2 />
           View
-          <ChevronsUpDown className="ml-auto size-4 shrink-0 opacity-50" />
+          <ChevronsUpDown className="ml-auto opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent
         align="end"
         className="w-44 p-0"
-        onCloseAutoFocus={() => triggerRef.current?.focus()}
+        onCloseAutoFocus={() =>
+          triggerRef.current?.focus({ preventScroll: true })
+        }
       >
         <Command>
           <CommandInput placeholder="Search columns..." />

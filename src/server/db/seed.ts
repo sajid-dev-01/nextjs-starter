@@ -22,7 +22,6 @@ async function seed() {
       email,
       password,
       name: "Test User",
-      role: "admin",
     },
   });
   if (!data) {
@@ -31,7 +30,7 @@ async function seed() {
 
   await db
     .update(table.users)
-    .set({ emailVerified: true })
+    .set({ emailVerified: true, role: "admin" })
     .where(eq(table.users.id, data.user.id));
 }
 

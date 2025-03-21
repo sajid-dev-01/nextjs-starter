@@ -11,6 +11,7 @@ import {
   Tailwind,
   Text,
 } from "@react-email/components";
+import React from "react";
 
 interface Props {
   code: string;

@@ -58,8 +58,10 @@ export function DataTableToolbar<TData>({
 
   return (
     <div
+      role="toolbar"
+      aria-orientation="horizontal"
       className={cn(
-        "flex w-full items-center justify-between gap-2",
+        "flex w-full items-center justify-between gap-2 overflow-auto",
         className
       )}
       {...props}
@@ -106,7 +108,7 @@ export function DataTableToolbar<TData>({
             onClick={() => table.resetColumnFilters()}
           >
             Reset
-            <X className="ml-2 size-4" aria-hidden="true" />
+            <X />
           </Button>
         )}
       </div>

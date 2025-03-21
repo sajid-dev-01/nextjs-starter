@@ -19,6 +19,7 @@ import {
 export const actionClient = createSafeActionClient({
   defaultValidationErrorsShape: "flattened",
   handleServerError(err) {
+    console.log(err);
     console.error("Action error:", err.message);
 
     if (err instanceof ValidationError) {
@@ -43,20 +44,20 @@ export const actionClient = createSafeActionClient({
     return z.object({ actionName: z.string() });
   },
   // Define logging middleware.
-}).use(async ({ next, clientInput, metadata }) => {
-  console.log("LOGGING MIDDLEWARE");
+}).use(async ({ next }) => {
+  // console.log("LOGGING MIDDLEWARE");
 
-  const startTime = performance.now();
+  // const startTime = performance.now();
 
   // Here we await the action execution.
   const { ctx, parsedInput, ...result } = await next();
 
-  const endTime = performance.now();
+  // const endTime = performance.now();
 
-  console.log("Result ->", result);
-  console.log("Client input ->", clientInput);
-  console.log("Metadata ->", metadata);
-  console.log("Action execution took", endTime - startTime, "ms");
+  // console.log("Result ->", result);
+  // console.log("Client input ->", clientInput);
+  // console.log("Metadata ->", metadata);
+  // console.log("Action execution took", endTime - startTime, "ms");
 
   // And then return the result of the awaited action.
   return result;

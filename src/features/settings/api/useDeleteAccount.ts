@@ -9,7 +9,7 @@ interface Input {
   password?: string;
 }
 
-export const useDeleteUser = () => {
+export const useDeleteAccount = () => {
   return useMutation({
     mutationFn: async ({ token, password }: Input) => {
       const { data, error } = await authClient.deleteUser({ token, password });

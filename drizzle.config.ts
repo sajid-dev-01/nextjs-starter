@@ -6,9 +6,8 @@ config({ path: ".env.local" });
 export default defineConfig({
   schema: "./src/server/db/schema.ts",
   out: "./migrations",
-  dialect: "turso",
+  dialect: "sqlite",
   dbCredentials: {
     url: process.env.DATABASE_URL!,
-    authToken: process.env.DB_AUTH_TOKEN!,
   },
 });
