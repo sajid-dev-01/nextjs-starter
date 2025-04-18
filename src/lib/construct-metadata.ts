@@ -7,14 +7,14 @@ export function constructMetadata({
   canonicalUrl,
   image = "/assets/thumbnail.jpg",
   title = siteConfig.name,
-  description = "A simple next.js starter template",
+  description = siteConfig.description,
   ...rest
 }: { image?: string; video?: string; canonicalUrl?: string } & Metadata) {
   return {
-    title,
+    title: { default: title, template: `%s - ${siteConfig.name}` },
     description,
     icons: {
-      icon: { url: "/favicon.ico", sizes: "any" },
+      icon: { url: "/icon.png", sizes: "any" },
       //shortcut: "/favicon-16x16.png",
       apple: "/apple-touch-icon.png",
     },

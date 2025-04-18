@@ -4,6 +4,10 @@ import { UsersTable } from "~/features/users/components/users-table";
 import { searchParamsCache } from "~/features/users/schemas";
 import { getValidFilters } from "~/lib/data-table";
 
+export const metadata = {
+  title: "Users | Dashboard",
+};
+
 interface Props {
   searchParams: Promise<SearchParams>;
 }

@@ -13,7 +13,10 @@ import {
 } from "~/components/ui/sidebar";
 import { UserMenu } from "~/components/user-menu";
 import { AUTH_URI } from "~/features/auth/constants";
+import { constructMetadata } from "~/lib/construct-metadata";
 import { auth } from "~/server/lib/auth";
+
+export const metadata = constructMetadata({ title: "Dashboard" });
 
 type Props = {
   children: React.ReactNode;

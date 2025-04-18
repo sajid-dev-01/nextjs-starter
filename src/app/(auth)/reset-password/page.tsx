@@ -1,21 +1,9 @@
-"use client";
-
-import { useResetPassword } from "~/features/auth/api/reset-password";
 import { ResetPasswordForm } from "~/features/auth/components/reset-password";
-import { type ResetPasswordPayload } from "~/features/auth/schemas";
+
+export const metadata = {
+  title: "Reset Password",
+};
 
 export default function ResetPasswordPage() {
-  const { mutate, isPending } = useResetPassword();
-
-  const handleSubmit = (data: ResetPasswordPayload) => {
-    mutate(data);
-  };
-
-  return (
-    <ResetPasswordForm
-      email="test@test.com"
-      onSubmit={handleSubmit}
-      isPending={isPending}
-    />
-  );
+  return <ResetPasswordForm email="test@test.com" />;
 }

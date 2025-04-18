@@ -1,3 +1,5 @@
+"use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -6,16 +8,14 @@ import { GenericInput } from "~/components/form/generic-input";
 import { ButtonLoading } from "~/components/ui-ext/button-loading";
 import { siteConfig } from "~/site-config";
 
+import { useSignup } from "../api/sign-up";
 import { AUTH_URI } from "../constants";
 import { type SignUpPayload, SignUpSchema } from "../schemas";
 import AuthCard from "./auth-card";
 
-interface Props {
-  onSubmit: (data: SignUpPayload) => void;
-  isPending?: boolean;
-}
+export const SignUpForm = () => {
+  const { mutate, isPending } = useSignup();
 
-export const SignUpForm = ({ onSubmit, isPending = false }: Props) => {
   const form = useForm<SignUpPayload>({
     resolver: zodResolver(SignUpSchema),
     defaultValues: {
@@ -25,6 +25,10 @@ export const SignUpForm = ({ onSubmit, isPending = false }: Props) => {
     },
   });
 
+  const handleSubmit = (data: SignUpPayload) => {
+    mutate(data);
+  };
+
   return (
     <AuthCard
       headerTitle={`Register to ${siteConfig.name}`}
@@ -33,7 +37,7 @@ export const SignUpForm = ({ onSubmit, isPending = false }: Props) => {
       buttonHref={AUTH_URI.signIn}
       showSocial
     >
-      <GenericForm {...form} onSubmit={onSubmit}>
+      <GenericForm {...form} onSubmit={handleSubmit}>
         <div className="space-y-4">
           <GenericInput
             form={form}

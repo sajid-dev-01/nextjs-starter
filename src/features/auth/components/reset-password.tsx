@@ -1,3 +1,5 @@
+"use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -5,21 +7,21 @@ import { GenericForm } from "~/components/form/generic-form";
 import { GenericInput } from "~/components/form/generic-input";
 import { ButtonLoading } from "~/components/ui-ext/button-loading";
 
+import { useResetPassword } from "../api/reset-password";
 import { AUTH_URI } from "../constants";
 import { type ResetPasswordPayload, ResetPasswordSchema } from "../schemas";
 import AuthCard from "./auth-card";
 
 interface Props {
   email: string;
-  onSubmit: (data: ResetPasswordPayload) => void;
-  isPending?: boolean;
 }
 
-export const ResetPasswordForm = ({
-  email,
-  onSubmit,
-  isPending = false,
-}: Props) => {
+export const ResetPasswordForm = ({ email }: Props) => {
+  const { mutate, isPending } = useResetPassword();
+
+  const handleSubmit = (data: ResetPasswordPayload) => {
+    mutate(data);
+  };
   const form = useForm<ResetPasswordPayload>({
     resolver: zodResolver(ResetPasswordSchema),
     defaultValues: {
@@ -36,7 +38,7 @@ export const ResetPasswordForm = ({
       buttonLabel="Don't have an account?"
       buttonHref={AUTH_URI.signUp}
     >
-      <GenericForm {...form} onSubmit={onSubmit}>
+      <GenericForm {...form} onSubmit={handleSubmit}>
         <div className="space-y-4">
           <GenericInput
             form={form}

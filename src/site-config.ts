@@ -1,13 +1,14 @@
 import { env } from "./env";
 
 const currentYear = new Date().getFullYear().toString();
-const websiteLaunchYear = "2024";
+const websiteLaunchYear = "2025";
 
 export const siteConfig = {
   name: env.NEXT_PUBLIC_APP_NAME,
   url: env.NEXT_PUBLIC_APP_URL,
   locale: "en-US",
   language: "en-us",
+  description: "A simple next.js starter template",
   source: {
     github: "https://github.com/sajid-dev-01/next-starter.git",
   },
