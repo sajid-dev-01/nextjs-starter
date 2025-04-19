@@ -1,7 +1,5 @@
-import { type Client, createClient, type ResultSet } from "@libsql/client";
-import type { ExtractTablesWithRelations } from "drizzle-orm";
+import { type Client, createClient } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
-import type { SQLiteTransaction } from "drizzle-orm/sqlite-core";
 
 import { env } from "~/env";
 
@@ -21,10 +19,3 @@ if (env.NODE_ENV !== "production") globalForDb.client = client;
 
 export const db = drizzle(client, { schema });
 export const table = schema;
-
-export type DrizzleTransaction = SQLiteTransaction<
-  "async",
-  ResultSet,
-  typeof schema,
-  ExtractTablesWithRelations<typeof schema>
->;
