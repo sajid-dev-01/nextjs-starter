@@ -14,9 +14,9 @@ export function constructMetadata({
     title: { default: title, template: `%s - ${siteConfig.name}` },
     description,
     icons: {
-      icon: { url: "/icon.png", sizes: "any" },
+      icon: { url: "/favicon.ico", sizes: "any" },
       //shortcut: "/favicon-16x16.png",
-      apple: "/apple-touch-icon.png",
+      // apple: "/apple-touch-icon.png",
     },
     metadataBase: new URL(siteConfig.url),
     openGraph: {

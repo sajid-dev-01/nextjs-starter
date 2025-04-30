@@ -5,8 +5,8 @@ import { admin, createAuthMiddleware, emailOTP } from "better-auth/plugins";
 import VerifyOTPEmail from "~/emails/verify-otp";
 import { env } from "~/env";
 import { AUTH_URI, UNVERIFIED_EMAIL_COOKIE } from "~/features/auth/constants";
+import { siteConfig } from "~/site-config";
 
-import { appConfig } from "../configs/app-config";
 import { authConfig } from "../configs/auth-config";
 import { db } from "../db/drizzle";
 import { sendEmail } from "./email-sender";
@@ -48,14 +48,14 @@ export const auth = betterAuth({
         if (type === "email-verification" || type === "forget-password") {
           await sendEmail(
             email,
-            `Verify your email for ${appConfig.name}`,
+            `Verify your email for ${siteConfig.name}`,
             VerifyOTPEmail({
               code: otp,
-              appUrl: appConfig.url,
-              appName: appConfig.name,
+              appUrl: siteConfig.url,
+              appName: siteConfig.name,
               expiration: authConfig.email.confirmationExpires,
-              companyName: appConfig.companyName,
-              companyAddr: appConfig.companyAddr,
+              companyName: siteConfig.companyName,
+              companyAddr: siteConfig.companyAddr,
             })
           );
         }

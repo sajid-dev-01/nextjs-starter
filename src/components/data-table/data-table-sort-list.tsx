@@ -2,10 +2,10 @@
 
 import type { ColumnSort, SortDirection, Table } from "@tanstack/react-table";
 import {
-  ArrowDownUp,
-  ChevronsUpDown,
-  GripVertical,
-  Trash2,
+  ArrowDownUpIcon,
+  ChevronsUpDownIcon,
+  GripVerticalIcon,
+  Trash2Icon,
 } from "lucide-react";
 import * as React from "react";
 
@@ -175,7 +175,7 @@ export function DataTableSortList<TData>({
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button variant="outline" size="sm" onKeyDown={onTriggerKeyDown}>
-            <ArrowDownUp />
+            <ArrowDownUpIcon />
             Sort
             {sorting.length > 0 && (
               <Badge
@@ -330,7 +330,7 @@ function DataTableSortItem({
               className="w-44 justify-between rounded font-normal"
             >
               <span className="truncate">{columnLabels.get(sort.id)}</span>
-              <ChevronsUpDown className="opacity-50" />
+              <ChevronsUpDownIcon className="opacity-50" />
             </Button>
           </PopoverTrigger>
           <PopoverContent
@@ -388,7 +388,7 @@ function DataTableSortItem({
           className="size-8 shrink-0 rounded"
           onClick={() => onSortRemove(sort.id)}
         >
-          <Trash2 />
+          <Trash2Icon />
         </Button>
         <SortableItemHandle asChild>
           <Button
@@ -396,7 +396,7 @@ function DataTableSortItem({
             size="icon"
             className="size-8 shrink-0 rounded"
           >
-            <GripVertical />
+            <GripVerticalIcon />
           </Button>
         </SortableItemHandle>
       </div>

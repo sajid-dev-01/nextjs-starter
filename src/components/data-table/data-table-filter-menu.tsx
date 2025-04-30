@@ -3,12 +3,12 @@
 import type { Column, Table } from "@tanstack/react-table";
 import { generateId } from "better-auth";
 import {
-  BadgeCheck,
+  BadgeCheckIcon,
   CalendarIcon,
-  Check,
-  ListFilter,
-  Text,
-  X,
+  CheckIcon,
+  ListFilterIcon,
+  TextIcon,
+  XIcon,
 } from "lucide-react";
 import { useQueryState } from "nuqs";
 import * as React from "react";
@@ -254,7 +254,7 @@ export function DataTableFilterMenu<TData>({
           className="size-8"
           onClick={onFiltersReset}
         >
-          <X />
+          <XIcon />
         </Button>
       )}
       <Popover open={open} onOpenChange={onOpenChange}>
@@ -267,7 +267,7 @@ export function DataTableFilterMenu<TData>({
             ref={triggerRef}
             onKeyDown={onTriggerKeyDown}
           >
-            <ListFilter />
+            <ListFilterIcon />
             {filters.length > 0 ? null : "Filter"}
           </Button>
         </PopoverTrigger>
@@ -448,7 +448,7 @@ function DataTableFilterItem<TData>({
                       <span className="truncate">
                         {column.columnDef.meta?.label ?? column.id}
                       </span>
-                      <Check
+                      <CheckIcon
                         className={cn(
                           "ml-auto",
                           column.id === filter.id ? "opacity-100" : "opacity-0"
@@ -511,7 +511,7 @@ function DataTableFilterItem<TData>({
           className="dark:bg-input/30 h-full rounded-none rounded-r-md border border-l-0 px-1.5 font-normal"
           onClick={() => onFilterRemove(filter.filterId)}
         >
-          <X className="size-3.5" />
+          <XIcon className="size-3.5" />
         </Button>
       </div>
     );
@@ -589,12 +589,12 @@ function FilterValueSelector<TData>({
           >
             {isEmpty ? (
               <>
-                <Text />
+                <TextIcon />
                 <span>Type to add filter...</span>
               </>
             ) : (
               <>
-                <BadgeCheck />
+                <BadgeCheckIcon />
                 <span className="truncate">Filter by &quot;{value}&quot;</span>
               </>
             )}
@@ -780,7 +780,7 @@ function onFilterInputRender<TData>({
                       {option.icon && <option.icon />}
                       <span className="truncate">{option.label}</span>
                       {filter.variant === "multiSelect" && (
-                        <Check
+                        <CheckIcon
                           className={cn(
                             "ml-auto",
                             selectedValues.includes(option.value)

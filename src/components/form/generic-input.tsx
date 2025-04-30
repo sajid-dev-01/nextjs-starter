@@ -19,6 +19,7 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "../ui/input-otp";
+import { Textarea } from "../ui/textarea";
 import { InputPassword } from "../ui-ext/input-password";
 
 interface Props<T extends FieldValues> {
@@ -26,7 +27,7 @@ interface Props<T extends FieldValues> {
   isPending: boolean;
   name: FieldPath<T>;
   label?: string;
-  type?: HTMLInputTypeAttribute | "otp" | "phone";
+  type?: HTMLInputTypeAttribute | "otp" | "phone" | "textarea";
   placeholder?: string;
 }
 
@@ -72,7 +73,15 @@ export const GenericInput = <T extends FieldValues>({
                   </InputOTPGroup>
                 </InputOTP>
               )}
-              {type !== "password" && type !== "otp" && (
+              {type === "textarea" && (
+                <Textarea
+                  {...field}
+                  placeholder={placeholder}
+                  disabled={isPending}
+                  rows={4}
+                />
+              )}
+              {type !== "password" && type !== "otp" && type !== "textarea" && (
                 <Input
                   {...field}
                   disabled={isPending}

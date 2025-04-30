@@ -1,10 +1,7 @@
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
-
 import { KBar } from "~/components/dashboard/kbar";
 import { AppSidebar } from "~/components/dashboard/sidebar/app-sidebar";
-import SearchInput from "~/components/dashboard/sidebar/search-input";
-import { ThemeToggle } from "~/components/theme-toggle";
+import { SearchInput } from "~/components/dashboard/sidebar/search-input";
+import { ThemeSwitcher } from "~/components/theme-switcher";
 import { Separator } from "~/components/ui/separator";
 import {
   SidebarInset,
@@ -12,9 +9,8 @@ import {
   SidebarTrigger,
 } from "~/components/ui/sidebar";
 import { UserMenu } from "~/components/user-menu";
-import { AUTH_URI } from "~/features/auth/constants";
 import { constructMetadata } from "~/lib/construct-metadata";
-import { auth } from "~/server/lib/auth";
+import { checkAuth } from "~/server/helpers";
 
 export const metadata = constructMetadata({ title: "Dashboard" });
 
@@ -23,8 +19,7 @@ type Props = {
 };
 
 export default async function DashboardLayout({ children }: Props) {
-  const authn = await auth.api.getSession({ headers: await headers() });
-  if (!authn?.user) return redirect(AUTH_URI.signIn);
+  await checkAuth();
 
   return (
     <KBar>
@@ -41,7 +36,7 @@ export default async function DashboardLayout({ children }: Props) {
               <div className="mr-auto inline-flex items-center gap-2">
                 <SearchInput />
               </div>
-              <ThemeToggle />
+              <ThemeSwitcher />
               {/* @ts-expect-error */}
               <UserMenu user={authn.user} />
             </div>

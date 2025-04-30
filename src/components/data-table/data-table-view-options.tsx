@@ -1,7 +1,7 @@
 "use client";
 
 import type { Table } from "@tanstack/react-table";
-import { Check, ChevronsUpDown, Settings2 } from "lucide-react";
+import { CheckIcon, ChevronsUpDownIcon, Settings2Icon } from "lucide-react";
 import * as React from "react";
 
 import { Button } from "~/components/ui/button";
@@ -48,9 +48,9 @@ export function DataTableViewOptions<TData>({
           size="sm"
           className="ml-auto hidden h-8 lg:flex"
         >
-          <Settings2 />
+          <Settings2Icon />
           View
-          <ChevronsUpDown className="ml-auto opacity-50" />
+          <ChevronsUpDownIcon className="ml-auto opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent align="end" className="w-44 p-0">
@@ -69,7 +69,7 @@ export function DataTableViewOptions<TData>({
                   <span className="truncate">
                     {column.columnDef.meta?.label ?? column.id}
                   </span>
-                  <Check
+                  <CheckIcon
                     className={cn(
                       "ml-auto size-4 shrink-0",
                       column.getIsVisible() ? "opacity-100" : "opacity-0"

@@ -4,11 +4,11 @@ import type { Column, ColumnMeta, Table } from "@tanstack/react-table";
 import { generateId } from "better-auth";
 import {
   CalendarIcon,
-  Check,
+  CheckIcon,
   ChevronsUpDown,
   GripVertical,
-  ListFilter,
-  Trash2,
+  ListFilterIcon,
+  Trash2Icon,
 } from "lucide-react";
 import { parseAsStringEnum, useQueryState } from "nuqs";
 import * as React from "react";
@@ -114,8 +114,6 @@ export function DataTableFilterList<TData>({
       })
   );
   const debouncedSetFilters = useDebouncedCallback(setFilters, debounceMs);
-
-  console.log({ filters });
 
   const [joinOperator, setJoinOperator] = useQueryState(
     JOIN_OPERATOR_KEY,
@@ -235,7 +233,7 @@ export function DataTableFilterList<TData>({
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button variant="outline" size="sm" onKeyDown={onTriggerKeyDown}>
-            <ListFilter />
+            <ListFilterIcon />
             Filter
             {filters.length > 0 && (
               <Badge
@@ -481,7 +479,7 @@ function DataTableFilterItem<TData>({
                       <span className="truncate">
                         {column.columnDef.meta?.label}
                       </span>
-                      <Check
+                      <CheckIcon
                         className={cn(
                           "ml-auto",
                           column.id === filter.id ? "opacity-100" : "opacity-0"
@@ -549,7 +547,7 @@ function DataTableFilterItem<TData>({
           className="size-8 rounded"
           onClick={() => onFilterRemove(filter.filterId)}
         >
-          <Trash2 />
+          <Trash2Icon />
         </Button>
         <SortableItemHandle asChild>
           <Button variant="outline" size="icon" className="size-8 rounded">
@@ -687,7 +685,7 @@ function onFilterInputRender<TData>({
           open={showValueSelector}
           onOpenChange={setShowValueSelector}
           value={selectedValues}
-          onValueChange={(value: any) => {
+          onValueChange={(value) => {
             onFilterUpdate(filter.filterId, {
               value,
             });

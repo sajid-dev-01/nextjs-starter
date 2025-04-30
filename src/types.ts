@@ -1,4 +1,4 @@
-import { type UserWithRole } from "better-auth/plugins";
+import type { UserWithRole } from "better-auth/plugins";
 
 declare global {
   interface Role {

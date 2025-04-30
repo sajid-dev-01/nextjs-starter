@@ -8,7 +8,7 @@ import { cn } from "~/lib/utils";
 
 import { Button, type buttonVariants } from "./ui/button";
 
-export const ThemeToggle = ({
+export const ThemeSwitcher = ({
   className,
   size = "icon",
   variant = "secondary",

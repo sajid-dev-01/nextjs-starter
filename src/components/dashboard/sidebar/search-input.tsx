@@ -5,7 +5,7 @@ import { Search } from "lucide-react";
 
 import { Button } from "~/components/ui/button";
 
-export default function SearchInput() {
+export function SearchInput() {
   const { query } = useKBar();
   return (
     <div className="w-full space-y-2">

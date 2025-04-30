@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 
-import { ThemeToggle } from "~/components/theme-toggle";
+import { ThemeSwitcher } from "~/components/theme-switcher";
 import { Button } from "~/components/ui/button";
 import {
   NavigationMenu,
@@ -88,7 +88,7 @@ const Header = () => {
           </NavigationMenu>
         </div>
         <div className="ml-auto flex gap-3 md:ml-0">
-          <ThemeToggle />
+          <ThemeSwitcher />
           {auth?.user ? (
             // @ts-expect-error
             <UserMenu user={auth?.user} />
