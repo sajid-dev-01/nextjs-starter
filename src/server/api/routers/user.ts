@@ -7,8 +7,7 @@ import {
 } from "~/features/users/schemas";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { auth } from "~/server/lib/auth";
-
-import { getUserRoleCounts, getUsers } from "./repository";
+import { getUserRoleCounts, getUsers } from "~/server/repositories/user-repository";
 
 export const userRouter = createTRPCRouter({
   create: protectedProcedure
