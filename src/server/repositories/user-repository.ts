@@ -1,109 +1,55 @@
 import "server-only";
 
-import {
-  and,
-  asc,
-  count,
-  desc,
-  eq,
-  gt,
-  gte,
-  inArray,
-  like,
-  lte,
-} from "drizzle-orm";
+import { and, asc, count, desc, eq, gt, inArray, like } from "drizzle-orm";
 
-import { type UserListQueryInput } from "~/features/users/schemas";
-import { db, table } from "~/server/db/drizzle";
+import { type UserSearchParams } from "~/features/users/schemas";
+import { dateFilterSql, db, table } from "~/server/db/drizzle";
 import { unstable_cache } from "~/server/lib/unstable-cache";
 
 const REVALIDATION_INTERVAL = 20; // seconds
 
-export async function getUsers(input: UserListQueryInput) {
-  return await unstable_cache(
-    async () => {
-      try {
-        const offset = (input.page - 1) * input.perPage;
-        const banned =
-          input.status.includes("banned") && !input.status.includes("active");
+export async function userPaginate(input: UserSearchParams) {
+  const banned =
+    input.status.includes("banned") && !input.status.includes("active");
 
-        const where = and(
-          input.name ? like(table.users.name, `%${input.name}%`) : undefined,
-          input.role.length > 0
-            ? inArray(table.users.role, input.role)
+  const where = and(
+    input.name ? like(table.users.name, `%${input.name}%`) : undefined,
+    input.role.length > 0 ? inArray(table.users.role, input.role) : undefined,
+    banned ? eq(table.users.banned, true) : undefined,
+    input.createdAt && dateFilterSql(table.users.createdAt, input.createdAt)
+  );
+
+  const orderBy =
+    input.sort && input.sort.length > 0
+      ? input.sort.map((item) =>
+          item.desc ? desc(table.users[item.id]) : asc(table.users[item.id])
+        )
+      : [asc(table.users.createdAt)];
+
+  const [data, total] = await db.transaction((tx) =>
+    Promise.all([
+      tx.query.users.findMany({
+        where,
+        limit: input.perPage > 0 ? input.perPage : undefined,
+        offset:
+          input.page && input.perPage > 0
+            ? (input.page - 1) * input.perPage
             : undefined,
-          banned ? eq(table.users.banned, true) : undefined,
-          input.createdAt.length > 0
-            ? and(
-                input.createdAt[0]
-                  ? gte(
-                      table.users.createdAt,
-                      (() => {
-                        const date = new Date(input.createdAt[0]);
-                        date.setHours(0, 0, 0, 0);
-                        return date;
-                      })()
-                    )
-                  : undefined,
-                input.createdAt[1]
-                  ? lte(
-                      table.users.createdAt,
-                      (() => {
-                        const date = new Date(input.createdAt[1]);
-                        date.setHours(23, 59, 59, 999);
-                        return date;
-                      })()
-                    )
-                  : undefined
-              )
-            : undefined
-        );
+        orderBy,
+      }),
+      tx
+        .select({
+          count: count(),
+        })
+        .from(table.users)
+        .where(where)
+        .execute()
+        .then((res) => res[0]?.count ?? 0),
+    ])
+  );
 
-        const orderBy =
-          input.sort.length > 0
-            ? input.sort.map((item) =>
-                item.desc
-                  ? desc(table.users[item.id as "createdAt"])
-                  : asc(table.users[item.id as "createdAt"])
-              )
-            : [asc(table.users.createdAt)];
-
-        const { data, total } = await db.transaction(async (tx) => {
-          const data = await tx
-            .select()
-            .from(table.users)
-            .limit(input.perPage)
-            .offset(offset)
-            .where(where)
-            .orderBy(...orderBy);
-
-          const total = await tx
-            .select({
-              count: count(),
-            })
-            .from(table.users)
-            .where(where)
-            .execute()
-            .then((res) => res[0]?.count ?? 0);
-
-          return {
-            data,
-            total,
-          };
-        });
-
-        const pageCount = Math.ceil(total / input.perPage);
-        return { data, pageCount };
-      } catch (_err) {
-        return { data: [], pageCount: 0 };
-      }
-    },
-    [JSON.stringify(input)],
-    {
-      revalidate: REVALIDATION_INTERVAL,
-      tags: ["users"],
-    }
-  )();
+  const pageCount = input.perPage > 0 ? Math.ceil(total / input.perPage) : 1;
+  return { data, total, pageCount };
 }
 
 export async function getUserRoleCounts() {

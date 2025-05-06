@@ -3,11 +3,14 @@ import { revalidateTag } from "next/cache";
 import {
   createUserSchema,
   updateUserRoleSchema,
-  userListQuery,
+  userSearchQuerySchema,
 } from "~/features/users/schemas";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { auth } from "~/server/lib/auth";
-import { getUserRoleCounts, getUsers } from "~/server/repositories/user-repository";
+import {
+  getUserRoleCounts,
+  userPaginate,
+} from "~/server/repositories/user-repository";
 
 export const userRouter = createTRPCRouter({
   create: protectedProcedure
@@ -25,10 +28,12 @@ export const userRouter = createTRPCRouter({
       revalidateTag("users");
     }),
 
-  list: protectedProcedure.input(userListQuery).query(async ({ input }) => {
-    const data = await getUsers(input);
-    return data ?? null;
-  }),
+  list: protectedProcedure
+    .input(userSearchQuerySchema)
+    .query(async ({ input }) => {
+      const data = await userPaginate(input);
+      return data ?? null;
+    }),
 
   updateRole: protectedProcedure
     .input(updateUserRoleSchema)

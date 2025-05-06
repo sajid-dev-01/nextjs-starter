@@ -16,13 +16,13 @@ import { exportTableToCSV } from "~/lib/data-table/export";
 import { type DataTableRowAction } from "~/lib/data-table/types";
 import { api } from "~/trpc/react";
 
-import type { GetUsersSchema } from "../schemas";
+import type { UserSearchParams } from "../schemas";
 import { CreateUserModal } from "./create-user-modal";
 import { UsersTableActionBar } from "./users-table-action-bar";
 import { getColumns } from "./users-table-column";
 
 interface Props {
-  query: GetUsersSchema;
+  query: UserSearchParams;
 }
 
 export function UsersTable({ query }: Props) {
@@ -50,17 +50,6 @@ export function UsersTable({ query }: Props) {
     shallow: false,
     clearOnDefault: true,
   });
-
-  if (isFetching) {
-    return (
-      <DataTableSkeleton
-        columnCount={7}
-        filterCount={4}
-        cellWidths={["4rem", "10rem", "11rem", "10rem", "8rem", "9rem", "5rem"]}
-        shrinkZero
-      />
-    );
-  }
 
   return (
     <>
@@ -91,14 +80,31 @@ export function UsersTable({ query }: Props) {
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
       <Separator className="mb-4" />
-      <DataTable
-        table={table}
-        actionBar={<UsersTableActionBar table={table} />}
-      >
-        <DataTableToolbar table={table}>
-          <DataTableSortList table={table} align="end" />
-        </DataTableToolbar>
-      </DataTable>
+      {isFetching ? (
+        <DataTableSkeleton
+          columnCount={7}
+          filterCount={4}
+          cellWidths={[
+            "4rem",
+            "10rem",
+            "11rem",
+            "10rem",
+            "8rem",
+            "9rem",
+            "5rem",
+          ]}
+          shrinkZero
+        />
+      ) : (
+        <DataTable
+          table={table}
+          actionBar={<UsersTableActionBar table={table} />}
+        >
+          <DataTableToolbar table={table}>
+            <DataTableSortList table={table} align="end" />
+          </DataTableToolbar>
+        </DataTable>
+      )}
       {/* {rowAction?.row.original && ( */}
       {/*   <UpdateUserModal */}
       {/*     open={rowAction?.variant === "update"} */}

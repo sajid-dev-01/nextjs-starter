@@ -1,7 +1,12 @@
-import { createParser } from "nuqs/server";
+import {
+  createParser,
+  parseAsInteger,
+  parseAsString,
+  parseAsStringEnum,
+} from "nuqs/server";
 import { z } from "zod";
 
-import { dataTableConfig } from "./config";
+import { dataTableConfig, flagConfig } from "./config";
 import { type ExtendedColumnFilter, type ExtendedColumnSort } from "./types";
 
 const sortingItemSchema = z.object({
@@ -93,3 +98,45 @@ export const getFiltersStateParser = <TData>(
       ),
   });
 };
+
+export const getBaseSearchParamsCache = <T extends object = object>() => ({
+  page: parseAsInteger,
+  perPage: parseAsInteger.withDefault(10),
+  sort: getSortingStateParser<T>().withDefault([
+    { id: "createdAt" as Extract<keyof T, string>, desc: true },
+  ]),
+  search: parseAsString,
+  // filters
+  filterFlag: parseAsStringEnum(
+    flagConfig.featureFlags.map((flag) => flag.value)
+  ),
+  // advanced filter
+  filters: getFiltersStateParser<T>().withDefault([]),
+  joinOperator: parseAsStringEnum(["and", "or"]).withDefault("and"),
+});
+
+export const getBaseSearchQuerySchema = <T extends string = string>(
+  filterAbleFields: Array<T>
+) => ({
+  page: z.coerce.number().nullable(),
+  perPage: z.coerce.number().default(10),
+  sort: z
+    .object({ id: z.enum(filterAbleFields as [T]), desc: z.boolean() })
+    .array()
+    .default([{ id: "createdAt" as T, desc: true }]),
+  search: z.string().nullable(),
+  // filters
+  filterFlag: z.enum(["advancedFilters", "commandFilters"]).nullable(),
+  // advanced filter
+  filters: z
+    .object({
+      id: z.enum(filterAbleFields as [T]),
+      value: z.union([z.string(), z.array(z.string())]),
+      variant: z.enum(dataTableConfig.filterVariants),
+      operator: z.enum(dataTableConfig.operators),
+      filterId: z.string(),
+    })
+    .array()
+    .default([]),
+  joinOperator: z.enum(["and", "or"]).default("and"),
+});
